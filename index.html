@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MetaGrowX</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #1a2b8c;
+    --teal: #00c9a7;
+    --green: #3aff6c;
+    --dark: #0d1224;
+    --card: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+  }
+
+  body {
+    min-height: 100vh;
+    background: var(--dark);
+    font-family: 'Outfit', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Animated background blobs */
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+  .blob1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, #1a2b8c, transparent);
+    top: -150px; left: -150px;
+    animation-delay: 0s;
+  }
+  .blob2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, #00c9a7, transparent);
+    bottom: -100px; right: -100px;
+    animation-delay: -4s;
+  }
+  .blob3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, #3aff6c44, transparent);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: -8s;
+  }
+  @keyframes drift {
+    from { transform: scale(1) translate(0, 0); }
+    to   { transform: scale(1.15) translate(30px, 20px); }
+  }
+
+  /* Grid lines overlay */
+  .grid {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Card */
+  .card {
+    position: relative;
+    z-index: 10;
+    width: min(420px, 92vw);
+    background: rgba(13, 18, 36, 0.7);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 48px 36px 44px;
+    text-align: center;
+    backdrop-filter: blur(24px);
+    box-shadow:
+      0 0 0 1px rgba(0,201,167,0.1),
+      0 40px 80px rgba(0,0,0,0.6),
+      inset 0 1px 0 rgba(255,255,255,0.06);
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Glow ring behind logo */
+  .logo-wrap {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+    animation: fadeUp 0.8s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .logo-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -16px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #1a2b8c, #00c9a7, #3aff6c, #1a2b8c);
+    opacity: 0.3;
+    filter: blur(18px);
+    animation: spin 6s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .logo-wrap img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: #fff;
+    padding: 12px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 8px 32px rgba(0,201,167,0.25);
+  }
+
+  /* Brand name */
+  .brand {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2.6rem;
+    letter-spacing: 0.08em;
+    background: linear-gradient(135deg, #fff 30%, #00c9a7 70%, #3aff6c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+    animation: fadeUp 0.8s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .tagline {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    animation: fadeUp 0.8s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Divider */
+  .divider {
+    width: 48px;
+    height: 2px;
+    background: linear-gradient(90deg, #00c9a7, #3aff6c);
+    border-radius: 2px;
+    margin: 0 auto 32px;
+    animation: fadeUp 0.8s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Buttons */
+  .links { display: flex; flex-direction: column; gap: 14px; }
+
+  .link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 24px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .link-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0);
+    transition: background 0.2s ease;
+  }
+  .link-btn:hover { transform: translateY(-3px) scale(1.02); filter: brightness(1.1); }
+  .link-btn:hover::before { background: rgba(255,255,255,0.06); }
+  .link-btn:active { transform: translateY(0) scale(0.98); }
+
+  /* Individual button styles */
+  .btn-instagram {
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(253, 29, 29, 0.3);
+    animation: fadeUp 0.8s 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .btn-facebook {
+    background: linear-gradient(135deg, #1877f2, #0d52b2);
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(24, 119, 242, 0.3);
+    animation: fadeUp 0.8s 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .btn-website {
+    background: linear-gradient(135deg, #00c9a7, #3aff6c);
+    color: #0d1224;
+    box-shadow: 0 8px 24px rgba(0, 201, 167, 0.3);
+    font-weight: 600;
+    animation: fadeUp 0.8s 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Icons */
+  .icon {
+    width: 22px; height: 22px;
+    flex-shrink: 0;
+    fill: currentColor;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 32px;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.1em;
+    animation: fadeUp 0.8s 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .footer span {
+    background: linear-gradient(90deg, #00c9a7, #3aff6c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+  }
+
+  /* Floating particles */
+  .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .particle {
+    position: absolute;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: #00c9a7;
+    opacity: 0;
+    animation: floatUp var(--dur) ease-in var(--delay) infinite;
+  }
+  @keyframes floatUp {
+    0%   { opacity: 0; transform: translateY(0) scale(0); }
+    20%  { opacity: 0.6; transform: translateY(-20px) scale(1); }
+    100% { opacity: 0; transform: translateY(-120px) scale(0.5); }
+  }
+
+  .rathor{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    /* margin-left: 20px; */
+  }
+
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+</div>
+<div class="grid"></div>
+<div class="particles" id="particles"></div>
+
+<div class="card">
+  <!-- Logo -->
+  <div class="logo-wrap">
+    <img src="image.png" alt="MetaGrowX Logo">
+  </div>
+
+  <!-- Brand -->
+  <div class="brand">MetaGrowX</div>
+  <div class="tagline">Grow Beyond Limits</div>
+  <div class="divider"></div>
+
+  <!-- Links -->
+  <div class="links">
+    <a href="https://www.instagram.com/digital_bittu_babu?igsh=OWZxeWEyYzEzZTg4" class="link-btn btn-instagram">
+      <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+      </svg>
+      Instagram
+    </a>
+
+    <a href="https://www.facebook.com/share/174bxNHk1c/" class="link-btn btn-facebook">
+      <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+      </svg>
+      Facebook
+    </a>
+
+    <a href="https://word-guesser-eight.vercel.app/" class="link-btn btn-website">
+      <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <img class="rathor"  src="image.png" alt="">
+        <path d="M12 0C5.374 0 0 5.373 0 12c0 6.628 5.374 12 12 12 6.628 0 12-5.372 12-12 0-6.627-5.372-12-12-12zm-.5 2.03c-.24.47-.48 1.04-.7 1.72-.31.95-.56 2.1-.73 3.4H8.13c.7-2.26 1.82-3.96 3.37-5.12zM7.04 9.15H4.18c.57-1.46 1.44-2.77 2.54-3.86.4.15.8.32 1.19.52-.42.99-.73 2.1-.87 3.34zM2 12c0-.96.12-1.89.34-2.79h3.22c-.1.9-.16 1.84-.16 2.79s.06 1.89.16 2.79H2.34C2.12 13.89 2 12.96 2 12zm2.18 3.85h2.86c.14 1.24.45 2.35.87 3.34-.39.2-.79.37-1.19.52-1.1-1.09-1.97-2.4-2.54-3.86zm2.09 1.06H8.1c.17 1.3.42 2.45.73 3.4.22.68.46 1.25.7 1.72-1.55-1.16-2.67-2.86-3.37-5.12zm5.23 5.07c-.28-.24-.57-.59-.85-1.05-.47-.75-.88-1.77-1.18-2.96-.06-.24-.11-.5-.16-.75h2.19v4.76zm0-6.83H9.12c-.11-.9-.18-1.84-.18-2.85v-.3c0-.84.06-1.65.16-2.4H11.5v5.55zm0-7.62H9.5c.05-.25.1-.51.16-.75.3-1.19.71-2.21 1.18-2.96.28-.46.57-.81.85-1.05v4.76zm1.5 14.45V17.3h2.19c-.05.25-.1.51-.16.75-.3 1.19-.71 2.21-1.18 2.96-.28.46-.57.81-.85 1.05zm0-6.83v-5.55h2.38c.1.75.16 1.56.16 2.4v.3c0 1.01-.07 1.95-.18 2.85H12.5zm0-7.62V2.97c.28.24.57.59.85 1.05.47.75.88 1.77 1.18 2.96.06.24.11.5.16.75H12.5zm1.42 19.52c.24-.47.48-1.04.7-1.72.31-.95.56-2.1.73-3.4h1.94c-.7 2.26-1.82 3.96-3.37 5.12zm4.14-1.26c-.4-.15-.8-.32-1.19-.52.42-.99.73-2.1.87-3.34h2.86c-.57 1.46-1.44 2.77-2.54 3.86zm2.87-5.41c.1-.9.16-1.84.16-2.79s-.06-1.89-.16-2.79H22c-.22.9-.34 1.83-.34 2.79 0 .96.12 1.89.34 2.79h-3.07zM15.9 9.15c-.14-1.24-.45-2.35-.87-3.34.39-.2.79-.37 1.19-.52 1.1 1.09 1.97 2.4 2.54 3.86H15.9zm-1.03 0h-1.94c.17-1.3.42-2.45.73-3.4.22-.68.46-1.25.7-1.72 1.55 1.16 2.67 2.86 3.37 5.12h-2.86z"/>
+      </svg>
+      Visit Website
+    </a>
+  </div>
+
+  <div class="footer">© 2026 <span>MetaGrowX</span> · All Rights Reserved</div>
+</div>
+
+<script>
+  // Generate floating particles
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      left: ${Math.random() * 100}%;
+      bottom: ${Math.random() * 30}%;
+      --dur: ${3 + Math.random() * 5}s;
+      --delay: ${Math.random() * 6}s;
+      background: ${Math.random() > 0.5 ? '#00c9a7' : '#3aff6c'};
+      width: ${2 + Math.random() * 3}px;
+      height: ${2 + Math.random() * 3}px;
+    `;
+    container.appendChild(p);
+  }
+</script>
+</body>
+</html>
